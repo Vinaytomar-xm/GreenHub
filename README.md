@@ -1,6 +1,6 @@
 # 🌱 Greenity — P2P Renewable Energy Platform
 
-A full-stack MERN (MongoDB, Express, React, Node.js) peer-to-peer green energy marketplace that connects renewable energy producers directly with consumers — no middlemen.
+A full-stack MERN (MongoDB, Express, React, Node.js) peer-to-peer green energy marketplace that connects renewable energy producers directly with consumers — no middlemen & this websites is unique because of this using Hinglish Version this is very attractive and unique , in case in future you can change the language.
 
 ---
 
