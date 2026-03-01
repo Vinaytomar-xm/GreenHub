@@ -144,8 +144,8 @@ greengrid/
 ### 1. Clone / Extract the project
 
 ```bash
-unzip greengrid.zip
-cd greengrid
+unzip greenhub.zip
+cd greenhub
 ```
 
 ### 2. Backend Setup
