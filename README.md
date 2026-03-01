@@ -1,4 +1,4 @@
-# 🌱 GreenGrid v2 — P2P Renewable Energy Platform
+# 🌱 Greenity — P2P Renewable Energy Platform
 
 A full-stack MERN (MongoDB, Express, React, Node.js) peer-to-peer green energy marketplace that connects renewable energy producers directly with consumers — no middlemen.
 
