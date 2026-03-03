@@ -362,3 +362,5 @@ npm run preview # Preview production build
 | Frontend | http://localhost:5173 |
 | Backend API | http://localhost:5000 |
 | MongoDB | mongodb://localhost:27017/greengrid |
+
+## Made with Vinay singh Tomar
