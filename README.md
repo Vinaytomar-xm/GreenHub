@@ -1,366 +1,157 @@
-# 🌱 Greenity — P2P Renewable Energy Platform
+# GreenHub — Renewable Energy Marketplace
 
-A full-stack MERN (MongoDB, Express, React, Node.js) peer-to-peer green energy marketplace that connects renewable energy producers directly with consumers — no middlemen & this websites is unique because of this using Hinglish Version this is very attractive and unique , in case in future you can change the language.
-
----
-
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [API Reference](#-api-reference)
-- [Authentication & Auth Guards](#-authentication--auth-guards)
-- [Bug Fixes (v2.1)](#-bug-fixes-v21)
-- [Default Admin Account](#-default-admin-account)
-- [Screenshots Overview](#-screenshots-overview)
+India's decentralized peer-to-peer green energy marketplace. Built with React + Express + MongoDB.
 
 ---
 
-## ✨ Features
+## ✨ What's New in v3
 
-### 🛒 Buy Energy
-- Browse verified renewable energy producers (Solar, Wind, Biogas)
-- Filter by type, sort by price or rating, search by name/location
-- Send buy requests directly to producers
-- **Login required** — unauthenticated users are redirected to login, then brought back after
-
-### ⚡ P2P Trading
-- Create live energy trade orders between producers and consumers
-- Real-time live trade feed (auto-refreshes every 5 seconds)
-- Energy mix visualization (Solar / Wind / Biogas breakdown)
-- **Login required** to initiate trades
-
-### 📋 Sell Energy
-- Multi-step registration form for energy producers (4 steps)
-- Collects owner info, energy details, pricing, and review
-- Submitted listings go to Admin Panel for approval
-- **Login required** to register as a producer
-
-### 🤝 Community
-- Browse local energy communities (Neighborhood Grid, Rural Co-op, Industrial Cluster, etc.)
-- Join communities via modal form
-- Live member count tracking
-- **Login required** to join
-
-### 🔗 Connect
-- Role-based connection form (Consumer / Producer / Investor)
-- Custom fields per role (energy needs, investment amount, producer capacity)
-- All submissions stored in MongoDB for admin review
-- **Login required** to submit
-
-### 🗺️ Energy Map
-- Live SVG map of India showing 15+ major cities
-- Color-coded zones: 🟢 Surplus | 🔴 Deficit | 🟡 Balanced
-- Auto-refreshes every 10 seconds
-- Clickable cities with detailed stats popup
-
-### 💬 Customer Support
-- Categorized query form (Trading, Payment, Technical, Account)
-- FAQ accordion section
-- Auto-generated Ticket IDs (TICK-0001 format)
-- Admin can view, reply, and resolve tickets
-
-### 🛡️ Admin Panel (`/admin`)
-- Producer Approvals — Review and approve/reject listings with notes
-- Buy Requests — Accept or reject buyer requests
-- Connections — View all connection form submissions
-- Support Tickets — Reply, mark in-progress, resolve
-- Users Table — View all registered users
-- Live pending-count badges on each tab
+- **Email Notifications** — Admin actions trigger automatic emails:
+  - Producer registration approved/rejected → email to producer
+  - Buy request accepted/rejected → email to buyer
+  - Support ticket admin reply → email to user
+- **Cookie Authentication** — HTTP-only secure cookies alongside JWT (dual auth)
+- **Vercel Deployment Ready** — Full env config, `vercel.json` for both frontend and backend
+- **100% English** — All Hinglish text converted to English
+- **Mobile Responsive** — Grid layouts use `auto-fit` and `clamp()` throughout
 
 ---
 
-## 🛠 Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React 18, Vite, React Router v6 |
-| Styling | Pure CSS with CSS variables (dark theme) |
-| State | React Context API (Auth + Notifications) |
-| Backend | Node.js, Express.js |
-| Database | MongoDB with Mongoose |
-| Auth | JWT (JSON Web Tokens), bcryptjs |
-| HTTP Client | Axios |
-
----
-
-## 📁 Project Structure
+## 🗂 Project Structure
 
 ```
-greengrid/
+GreenHub/
 ├── backend/
 │   ├── src/
-│   │   ├── server.js         ← Express app + all API routes
-│   │   ├── models.js         ← Mongoose schemas (User, Producer, Trade, etc.)
-│   │   ├── middleware.js     ← JWT protect + adminOnly guards
-│   │   └── data.js           ← Static seed data reference
-│   └── package.json
+│   │   ├── server.js      ← Express API, all routes
+│   │   ├── models.js      ← Mongoose schemas
+│   │   ├── middleware.js  ← JWT + cookie auth middleware
+│   │   └── email.js       ← Nodemailer email utility
+│   ├── .env.example
+│   ├── package.json
+│   └── vercel.json        ← Vercel serverless config
 │
 └── frontend/
     ├── src/
-    │   ├── context/
-    │   │   ├── AuthContext.jsx           ← JWT auth state (login/logout/user)
-    │   │   └── NotificationContext.jsx  ← Global toast notifications
-    │   ├── components/
-    │   │   ├── Navbar.jsx               ← Auth-aware navigation
-    │   │   ├── ProducerCard.jsx         ← Reusable producer card
-    │   │   ├── Background.jsx           ← Animated background
-    │   │   └── Notification.jsx         ← Toast notification UI
-    │   ├── pages/
-    │   │   ├── Login.jsx                ← Login with redirect-back support
-    │   │   ├── Signup.jsx               ← 2-step signup with role selection
-    │   │   ├── Home.jsx                 ← Landing page
-    │   │   ├── Dashboard.jsx            ← User dashboard
-    │   │   ├── BuyEnergy.jsx            ← Browse & request energy (auth guarded)
-    │   │   ├── SellEnergy.jsx           ← Register as producer (auth guarded)
-    │   │   ├── Trading.jsx              ← P2P trade orders (auth guarded)
-    │   │   ├── Marketplace.jsx          ← Producer marketplace
-    │   │   ├── Community.jsx            ← Communities + join (auth guarded)
-    │   │   ├── Connect.jsx              ← Connection form (auth guarded)
-    │   │   ├── EnergyMap.jsx            ← Live India energy map
-    │   │   ├── Support.jsx              ← Customer support tickets
-    │   │   └── AdminPanel.jsx           ← Admin-only panel
-    │   ├── api.js                       ← Axios instance + all API functions
-    │   ├── App.jsx                      ← Routes definition
-    │   ├── main.jsx                     ← React entry point
-    │   └── index.css                    ← Global styles + CSS variables
-    ├── index.html
-    ├── vite.config.js                   ← Vite + /api proxy config
-    └── package.json
+    │   ├── pages/          ← All page components
+    │   ├── components/     ← Navbar, Background, etc.
+    │   ├── context/        ← Auth + Notification contexts
+    │   ├── api.js          ← Axios API client
+    │   └── App.jsx
+    ├── .env.example
+    ├── vite.config.js
+    └── vercel.json         ← SPA routing config
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Local Development
 
-### Prerequisites
-
-- **Node.js** v18 or higher
-- **MongoDB** running locally (`mongod`) OR a MongoDB Atlas connection string
-
-### 1. Clone / Extract the project
-
-```bash
-unzip greenhub.zip
-cd greenhub
-```
-
-### 2. Backend Setup
+### 1. Backend Setup
 
 ```bash
 cd backend
+cp .env.example .env
+# Edit .env with your values (MongoDB URI, email credentials, etc.)
 npm install
 npm run dev
+# → Runs on http://localhost:5000
 ```
 
-Backend starts on **http://localhost:5000**
-
-On first run, the database is automatically seeded with:
-- 8 approved energy producers
-- 1 admin account (see below)
-
-### 3. Frontend Setup
+### 2. Frontend Setup
 
 ```bash
 cd frontend
+cp .env.example .env
+# No changes needed for local development
 npm install
 npm run dev
+# → Runs on http://localhost:3000
 ```
 
-Frontend starts on **http://localhost:5173**
-
-Vite automatically proxies all `/api` requests to `http://localhost:5000` — no CORS issues.
-
----
-
-## 🔧 Environment Variables
-
-Create a `.env` file inside the `backend/` folder:
-
-```env
-MONGO_URI=mongodb://localhost:27017/greengrid
-JWT_SECRET=your_super_secret_key_here
-PORT=5000
-```
-
-| Variable | Default | Description |
-|---|---|---|
-| `MONGO_URI` | `mongodb://localhost:27017/greengrid` | MongoDB connection string |
-| `JWT_SECRET` | `greengrid_secret_2024` | Secret key for signing JWTs |
-| `PORT` | `5000` | Port for the Express server |
+### Default Admin Credentials
+- Email: `admin@greenhub.in`
+- Password: `admin123`
 
 ---
 
-## 📡 API Reference
+## ⚙️ Environment Variables
 
-### Auth Routes
+### Backend `.env`
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/auth/signup` | Public | Register new user |
-| POST | `/api/auth/login` | Public | Login, returns JWT token |
-| GET | `/api/auth/me` | Protected | Get current user info |
+| Variable       | Description                              | Example                              |
+|----------------|------------------------------------------|--------------------------------------|
+| `PORT`         | Server port                              | `5000`                               |
+| `NODE_ENV`     | Environment                              | `development` / `production`         |
+| `MONGO_URI`    | MongoDB connection string                | `mongodb+srv://...`                  |
+| `JWT_SECRET`   | Secret key for JWT signing               | `your_random_secret_here`            |
+| `FRONTEND_URL` | Frontend URL (for CORS)                  | `https://your-app.vercel.app`        |
+| `EMAIL_HOST`   | SMTP host                                | `smtp.gmail.com`                     |
+| `EMAIL_PORT`   | SMTP port                                | `587`                                |
+| `EMAIL_SECURE` | Use SSL (true for port 465)              | `false`                              |
+| `EMAIL_USER`   | SMTP username / email                    | `you@gmail.com`                      |
+| `EMAIL_PASS`   | SMTP password / App Password             | `xxxx xxxx xxxx xxxx`                |
+| `EMAIL_FROM`   | Sender name and address                  | `"GreenHub" <you@gmail.com>`         |
 
-### Producer Routes
+> **Gmail tip:** Go to Google Account → Security → 2-Step Verification → App Passwords → generate one for "Mail".
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/producers` | Public | List approved producers (filter & sort supported) |
-| GET | `/api/producers/:id` | Public | Get single producer |
-| POST | `/api/producers` | Public | Submit new producer listing |
+### Frontend `.env`
 
-### Trade Routes
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/trades` | Public | List recent trades |
-| POST | `/api/trades` | Public | Create a new trade |
-
-### Buy Request Routes
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/buy-requests` | Public | List all buy requests |
-| POST | `/api/buy-requests` | Public | Submit a buy request |
-
-### Community Routes
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/api/communities` | Public | List all communities with member counts |
-| POST | `/api/communities/:id/join` | Public | Join a community |
-
-### Other Routes
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/connections` | Submit a connect/interest form |
-| POST | `/api/support` | Submit a support ticket |
-| GET | `/api/stats` | Platform-wide statistics |
-| GET | `/api/energy-map` | City energy data for the map |
-
-### Admin Routes (Protected + Admin Role Required)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/admin/producers` | All producers (including pending) |
-| PATCH | `/api/admin/producers/:id` | Approve / reject a producer |
-| GET | `/api/admin/users` | All registered users |
-| GET | `/api/admin/buy-requests` | All buy requests |
-| PATCH | `/api/admin/buy-requests/:id` | Update buy request status |
-| GET | `/api/admin/connections` | All connection submissions |
-| GET | `/api/support` | All support tickets |
-| PATCH | `/api/support/:id` | Reply / resolve a support ticket |
+| Variable           | Description                               | Example                                    |
+|--------------------|-------------------------------------------|--------------------------------------------|
+| `VITE_API_URL`     | Backend API base URL (production only)    | `https://your-backend.vercel.app/api`      |
+| `VITE_BACKEND_URL` | Backend URL for Vite dev proxy            | `http://localhost:5000`                    |
 
 ---
 
-## 🔐 Authentication & Auth Guards
+## 🌐 Deploy to Vercel
 
-JWT tokens are stored in `localStorage` under the key `gg_token` and attached to every Axios request via the `Authorization: Bearer <token>` header.
+### Step 1 — Deploy Backend
 
-### Protected Actions (Login Required)
+1. Push the `backend/` folder to a GitHub repo (or a subfolder)
+2. Go to [vercel.com](https://vercel.com) → New Project → Import repo
+3. Set **Root Directory** to `backend`
+4. Add all **Environment Variables** from the table above
+5. Deploy → note the URL, e.g. `https://greenhub-api.vercel.app`
 
-If an unauthenticated user tries to perform any of the following actions, they are:
-1. Shown a toast notification: *"Login karo pehle 🔐"*
-2. Redirected to `/login?redirect=<current-page>`
-3. After successful login, automatically brought back to the original page
+### Step 2 — Deploy Frontend
 
-| Page | Protected Action |
-|---|---|
-| Buy Energy | Clicking "Buy Request" on a producer |
-| Sell Energy | Submitting the producer registration form |
-| Trading | Clicking "Initiate Trade" |
-| Community | Clicking "Join Community" |
-| Connect | Submitting the connect form |
+1. Go to Vercel → New Project → Import same (or different) repo
+2. Set **Root Directory** to `frontend`
+3. Add environment variables:
+   - `VITE_API_URL` = `https://greenhub-api.vercel.app/api`
+4. Deploy → your app is live!
 
-### Admin Protection
+### Step 3 — Update Backend FRONTEND_URL
 
-The `/admin` route is protected by both JWT authentication and a role check (`role === 'admin'`). Any non-admin user attempting to access it will be redirected.
-
----
-
-## 🐛 Bug Fixes (v2.1)
-
-### Fix 1 — `/buy-requests` 400 Error
-
-**Problem:** The frontend was sending `producerId: modal.id`, but Mongoose MongoDB documents return `_id` (ObjectId) as the primary identifier. In some cases `modal.id` was resolving to `undefined`, causing the backend validation to fail with:
-
-```
-producerId, buyerName, buyerEmail and amount are required.
-```
-
-**Fix:** Updated all producer ID references to use `modal._id || modal.id` as a safe fallback:
-
-```js
-// Before (broken)
-createBuyRequest({ producerId: modal.id, ... })
-
-// After (fixed)
-createBuyRequest({ producerId: modal._id || modal.id, ... })
-```
-
-Same fix applied in `Trading.jsx` where `parseInt(selectedId)` was incorrectly treating MongoDB ObjectId strings as integers.
-
-### Fix 2 — Login Redirect Feature
-
-Added auth guards across all action-triggering pages so that unauthenticated users are redirected to login before they can submit any requests, trades, or community joins (see section above).
+Go back to your backend Vercel project → Settings → Environment Variables:
+- Update `FRONTEND_URL` to your frontend Vercel URL (e.g. `https://greenhub.vercel.app`)
+- Redeploy the backend
 
 ---
 
-## 🔑 Default Admin Account
+## 📧 Email Flow
 
-An admin account is automatically created on first startup:
-
-| Field | Value |
-|---|---|
-| Email | `admin@greengrid.in` |
-| Password | `admin123` |
-| Role | `admin` |
-
-> ⚠️ Change the password in production!
+| Action                        | Recipient     | Template                          |
+|-------------------------------|---------------|-----------------------------------|
+| Admin approves producer       | Producer      | ✅ Listing Approved email         |
+| Admin rejects producer        | Producer      | ❌ Listing Status Update email    |
+| Admin accepts buy request     | Buyer         | ✅ Buy Request Accepted email     |
+| Admin rejects buy request     | Buyer         | ❌ Buy Request Status Update email|
+| Admin replies to support ticket| Ticket owner | 💬 Support Team Reply email      |
 
 ---
 
-## 🗃️ Database Models
+## 🔐 Authentication
 
-| Model | Key Fields |
-|---|---|
-| `User` | name, email, password (hashed), role, userType, city |
-| `Producer` | name, type, location, capacity, price, status (pending/approved/rejected) |
-| `Trade` | tradeId, producerId, consumer, amount, status, co2Offset |
-| `BuyRequest` | reqId, producerId, buyerName, buyerEmail, amount, duration, status |
-| `Connection` | role, name, email, city, message |
-| `CommunityMember` | communityId, name, email, reason |
-| `SupportQuery` | ticketId, name, email, category, subject, message, adminReply, status |
+The app uses **dual authentication**:
+1. **HTTP-only Cookie** (`gh_token`) — set by server on login, sent automatically with `credentials: 'include'`
+2. **Authorization Header** — `Bearer <token>` stored in `localStorage` as fallback
+
+Both are verified in `middleware.js`. The token expires in **7 days**.
 
 ---
 
-## 📦 Scripts
+## 📱 Mobile Responsive
 
-### Backend
-```bash
-npm run dev     # Start with nodemon (hot reload)
-npm start       # Start normally
-```
-
-### Frontend
-```bash
-npm run dev     # Start Vite dev server
-npm run build   # Build for production
-npm run preview # Preview production build
-```
-
----
-
-## 🌐 Default Ports
-
-| Service | URL |
-|---|---|
-| Frontend | http://localhost:5173 |
-| Backend API | http://localhost:5000 |
-| MongoDB | mongodb://localhost:27017/greengrid |
-
-## Made with Vinay singh Tomar
+All layouts use CSS Grid with `repeat(auto-fit, minmax(...))` and `clamp()` for font sizes, ensuring full responsiveness on all screen sizes without media queries.
