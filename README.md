@@ -18,7 +18,7 @@
 
 | | Link |
 |---|---|
-| 🌐 **Frontend (Vercel)** | [https://greenhub-frontend-eight.vercel.app](https://greenhub-frontend-coral.vercel.app) |
+| 🌐 **Frontend (Vercel)** | [https://greenhub-frontend-coral.vercel.app](https://greenhub-frontend-coral.vercel.app) |
 | 🔧 **Backend API (Render)** | [https://greenhub-backend.onrender.com](https://greenhub-backend.onrender.com) |
 | 🗄️ **Database** | MongoDB Atlas (ap-south-1, Mumbai) |
 
