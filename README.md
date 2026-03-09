@@ -6,8 +6,8 @@
 
 **Buy & Sell Green Energy Directly — No Middlemen. No Broker Fees. 100% Green.**
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-greenhub--frontend--eight.vercel.app-4ade80?style=for-the-badge)](https://greenhub-frontend-eight.vercel.app)
-[![Backend API](https://img.shields.io/badge/🔧%20Backend%20API-greenhub--backend.onrender.com-38bdf8?style=for-the-badge)](https://greenhub-backend.onrender.com)
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-greenhub--frontend--coral.vercel.app-4ade80?style=for-the-badge)](https://greenhub-frontend-coral.vercel.app)
+[![Backend API](https://img.shields.io/badge/🔧%20Backend%20API-Railway-blueviolet?style=for-the-badge)](https://greenhub-backend-production.up.railway.app)
 [![GitHub](https://img.shields.io/badge/GitHub-Vinaytomar--xm-181717?style=for-the-badge&logo=github)](https://github.com/Vinaytomar-xm)
 
 </div>
@@ -19,16 +19,14 @@
 | | Link |
 |---|---|
 | 🌐 **Frontend (Vercel)** | [https://greenhub-frontend-coral.vercel.app](https://greenhub-frontend-coral.vercel.app) |
-| 🔧 **Backend API (Render)** | [https://greenhub-backend.onrender.com](https://greenhub-backend.onrender.com) |
+| 🔧 **Backend API (Railway)** | [https://greenhub-backend-production.up.railway.app](https://greenhub-backend-production.up.railway.app) |
 | 🗄️ **Database** | MongoDB Atlas (ap-south-1, Mumbai) |
-
-> ⚠️ **Note:** Backend is on Render Free Plan — first request may take 30–60 seconds to wake up.
 
 ### 🔐 Demo Credentials
 
 | Role | Email | Password |
 |---|---|---|
-| **Admin** | `admin email | `password` |
+| **Admin** | `admin-email` |'password' |
 | **User** | Register freely | Any password |
 
 ---
@@ -43,7 +41,7 @@
 - 📊 **Dashboard** — Track your listings, requests, and trades
 - 💬 **Support** — Ticket-based support system
 - 🛡️ **Admin Panel** — Manage producers, buy requests, and support tickets
-- ✉️ **Email Notifications** — Auto email on approval/rejection via Resend API
+- ✉️ **Email Notifications** — Auto email on approval/rejection via SendGrid
 - 🔒 **Auth** — JWT + Cookie-based authentication
 - 📱 **Mobile Responsive** — Hamburger menu below 768px
 
@@ -60,10 +58,10 @@
 ![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=nodedotjs)
 ![Express](https://img.shields.io/badge/Express-4-000?logo=express)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb)
-![Render](https://img.shields.io/badge/Deployed-Render-46E3B7?logo=render)
+![Railway](https://img.shields.io/badge/Deployed-Railway-0B0D0E?logo=railway)
 
 ### Email
-![Resend](https://img.shields.io/badge/Email-Resend%20API-000?logo=mail)
+![SendGrid](https://img.shields.io/badge/Email-SendGrid%20API-1A82E2?logo=sendgrid)
 
 ---
 
@@ -76,10 +74,10 @@ GreenHub/
 │   │   ├── server.js       # Express app, all API routes
 │   │   ├── models.js       # Mongoose schemas
 │   │   ├── middleware.js   # JWT auth middleware
-│   │   └── email.js        # Resend email templates
+│   │   └── email.js        # SendGrid email templates
 │   ├── .env.example
 │   ├── package.json
-│   └── vercel.json
+│   └── nixpacks.toml
 │
 └── frontend/
     ├── src/
@@ -98,7 +96,7 @@ GreenHub/
 ### Prerequisites
 - Node.js v18+
 - MongoDB (local or Atlas)
-- Resend account (free) for emails
+- SendGrid account (free) for emails
 
 ### 1. Clone the repo
 
@@ -138,21 +136,21 @@ npm run dev
 | `NODE_ENV` | Environment | `development` |
 | `MONGO_URI` | MongoDB connection string | `mongodb+srv://...` |
 | `JWT_SECRET` | JWT secret key | `your_secret_key` |
-| `FRONTEND_URL` | Frontend URL for CORS | `http://localhost:3000` |
-| `RESEND_API_KEY` | Resend API key | `re_xxxxxxxxxxxx` |
-| `EMAIL_FROM` | Sender email | `GreenHub <onboarding@resend.dev>` |
+| `FRONTEND_URL` | Frontend URL for CORS | `https://greenhub-frontend-coral.vercel.app` |
+| `SENDGRID_API_KEY` | SendGrid API key | `SG.xxxxxxxxxxxx` |
+| `EMAIL_FROM` | Verified sender email | `tomarvinaysingh70@gmail.com` |
 
 ### Frontend `.env`
 
 | Variable | Description | Example |
 |---|---|---|
-| `VITE_API_URL` | Backend API URL | `http://localhost:5000/api` |
+| `VITE_API_URL` | Backend API URL | `https://greenhub-backend-production.up.railway.app/api` |
 
 ---
 
 ## 📧 Email Notifications
 
-Emails are sent via **Resend API** (HTTP-based, works on all hosting platforms):
+Emails are sent via **SendGrid HTTP API** (port 443 — works on Railway, Render, everywhere):
 
 | Trigger | Recipient | Email Type |
 |---|---|---|
@@ -164,19 +162,21 @@ Emails are sent via **Resend API** (HTTP-based, works on all hosting platforms):
 
 ## 🌐 Deployment
 
-### Backend → Render
+### Backend → Railway
 
 1. Push code to GitHub
-2. Create **Web Service** on [render.com](https://render.com)
-3. Build: `npm install` · Start: `node src/server.js`
-4. Add environment variables in Render dashboard
+2. **[railway.app](https://railway.app)** → **New Project** → **Deploy from GitHub**
+3. Select `greenhub-backend` repo
+4. **Variables** tab → add all env variables
+5. **Settings** → **Networking** → **Generate Domain**
 
 ### Frontend → Vercel
 
 1. Push code to GitHub
-2. Import project on [vercel.com](https://vercel.com)
+2. **[vercel.com](https://vercel.com)** → Import project
 3. Framework: **Vite** · Output: `dist`
-4. Add `VITE_API_URL=https://your-backend.onrender.com/api`
+4. Add `VITE_API_URL=https://your-backend.up.railway.app/api`
+5. Deploy → Redeploy after backend URL is ready
 
 ---
 
@@ -211,5 +211,5 @@ MIT License — feel free to use and modify.
 ---
 
 <div align="center">
-  Made with ❤️ Vinay singh Tomar
+  Made with ❤️ Vinay Singh Tomar
 </div>
